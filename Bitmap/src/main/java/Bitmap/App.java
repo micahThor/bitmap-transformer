@@ -18,42 +18,25 @@ public class App {
 
     public static void main(String[] args) {
 
-//        Gather user input (infile, outfile, and transform)
+
         // get user input image path
-        Path inFile = Paths.get("src/main/resources/image.bmp");
+        Path inFile = Paths.get("src/main/resources/mario.bmp");
         // get user input path where the altered images will be saved
         //Path outFile = Paths.get(args[1]);
         // get user input for what type of image mutation
         //String imageMutationType = new String(args[2]);
 
 
-//        Read the input bitmap file
+
         File inputImageFile = new File(inFile.toUri());
 
         try {
             BufferedImage image = ImageIO.read(inputImageFile);
 
-            Raster imageRaster = image.getData();
+            BitMap bmp = new BitMap(image);
 
-            int[] preallocatedArray = new int[(image.getWidth() * image.getHeight()) * 4];
-
-            int[] pixelsData = imageRaster.getPixels(0, 0, image.getWidth(), image.getHeight(), preallocatedArray);
-
-            Color[][] imageMatrix = new Color[image.getWidth()][image.getHeight()];
-
-            for (int line = 0; line < imageMatrix.length; line++) {
-
-                for (int pixel = 0; pixel < imageMatrix[line].length; pixel++) {
-
-                    for (int pixelColorData = 0; pixelColorData < pixelsData.length; pixelColorData+=4) {
-                        imageMatrix[line][pixel] = new Color(pixelsData[pixelColorData], pixelsData[pixelColorData + 1], pixelsData[pixelColorData + 2], pixelsData[pixelColorData + 3]);
-                    }
-                }
-            }
-
-            BitMap bmp = new BitMap(imageMatrix);
-
-            bmp.blackAndWhite();
+            bmp.setInverted();
+            bmp.saveImg();
 
 
 
@@ -61,12 +44,6 @@ public class App {
             e.printStackTrace();
         }
 
-
-//        Parse the bitmap’s data into a Bitmap object (instance of a Bitmap class that you write)
-
-//        Using data from the parsed Bitmap, run a transform on the data directly (mutate the color or similar)
-
-//        Write the mutated image data to the output file path
     }
 
 }
